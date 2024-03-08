@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from models.models import  Item
-from logic.dummy import get_item
+from src.models.models import  Item
+from src.logic.dummy import get_item
 
 router = APIRouter()
 
