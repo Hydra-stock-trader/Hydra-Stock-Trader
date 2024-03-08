@@ -1,2 +1,9 @@
-/.venv
+.venv
+venv
+*.pyc
+*.egg
+__pycache__
+*.csv
+*.json
+
 .emv
