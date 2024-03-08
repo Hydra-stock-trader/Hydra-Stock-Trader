@@ -10,7 +10,7 @@ An advanced, machine learning-powered stock trading platform designed for precis
 [![GitHub issues](https://img.shields.io/github/issues/Hydra-stock-trader/Hydra-Stock-Trader.svg?style=flat-square)](https://github.com/Hydra-stock-trader/Hydra-Stock-Trader/issues)
 [![GitHub license](https://img.shields.io/github/license/Hydra-stock-trader/Hydra-Stock-Trader.svg?style=flat-square)](https://github.com/Hydra-stock-trader/Hydra-Stock-Trader/blob/main/LICENSE)
 
-![Hydra Stock Trader Banner](https://your-banner-image-url.jpg) TODO
+![Hydra Stock Trader Banner](./assets/HydraLogo.png) 
 
 A project leveraging the latest in machine learning, financial data analysis, and back-end efficiency to empower traders with real-time insights and automated trading strategies.
 
