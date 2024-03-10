@@ -1,4 +1,18 @@
 import yfinance as yf
+import math
+
+# Function to handle non-finite float values
+def handle_non_finite_values(data):
+    if isinstance(data, dict):
+        for key, value in data.items():
+            data[key] = handle_non_finite_values(value)
+    elif isinstance(data, list):
+        for i, value in enumerate(data):
+            data[i] = handle_non_finite_values(value)
+    elif isinstance(data, float):
+        if not math.isfinite(data):
+            return str(data)
+    return data
 
 # Gets OHLCV data for a given stock ticker, also Dividends and Stock Splits. 
 def get_stock_data(ticker_symbol: str):
@@ -29,5 +43,7 @@ def get_stock_data(ticker_symbol: str):
         "cashflow": cashflow.to_dict()
     }
     
+    # Handle non-finite float values in the data
+    data = handle_non_finite_values(data)
     
     return data
