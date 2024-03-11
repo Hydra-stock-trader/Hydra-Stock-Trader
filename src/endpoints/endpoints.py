@@ -4,6 +4,7 @@ from src.models.models import  Item
 
 from src.logic.stock_data import get_stock_data
 from src.logic.baseline_model import prepare_data, train_baseline_model
+from src.logic.data_analysis import evaluate_model
 
 router = APIRouter()
 
@@ -29,3 +30,18 @@ async def predict_stock_price(ticker_symbol: str):
     prediction = model.predict(last_day_features)[0]
     return {"ticker_symbol": ticker_symbol, "predicted_next_close": prediction, "rmse": rmse}
 
+
+@router.get("/stock/{ticker_symbol}/evaluate")
+async def evaluate_stock_model(ticker_symbol: str):
+    try:
+        data = get_stock_data(ticker_symbol)
+        mse, mae, accuracy, r_squared = evaluate_model(data)
+        return {
+            "ticker_symbol": ticker_symbol,
+            "mse": mse,
+            "mae": mae,
+            "accuracy": accuracy, 
+            "r_squared": r_squared
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to evaluate model for {ticker_symbol}: {str(e)}")
