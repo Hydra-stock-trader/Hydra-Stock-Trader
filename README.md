@@ -4,7 +4,7 @@
 
 An advanced, machine learning-powered stock trading platform designed for precision, performance, and scalability.
 
-Here to make sure this is My version (iwela)
+Here to make sure this is My version (iwela) Test
 
 [![GitHub contributors](https://img.shields.io/github/contributors/Hydra-stock-trader/Hydra-Stock-Trader.svg?style=flat-square)](https://github.com/Hydra-stock-trader/Hydra-Stock-Trader/graphs/contributors)
 [![GitHub forks](https://img.shields.io/github/forks/Hydra-stock-trader/Hydra-Stock-Trader.svg?style=flat-square)](https://github.com/Hydra-stock-trader/Hydra-Stock-Trader/network)
