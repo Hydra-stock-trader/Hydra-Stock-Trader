@@ -1,6 +1,6 @@
 import os
 from sec_api import QueryApi
-
+from dotenv import load_dotenv
 
 '''
 Documentation for Sec Api: https://github.com/janlukasschroeder/sec-api-python
@@ -17,13 +17,13 @@ I provide an example of how to use the 'get_filings_by_stock_name' function in:
 
 '''
 
-
-
 class SecData:
 
   # On Initilization
   def __init__(self):
-    self.queryApi = QueryApi(api_key='8d6d227739d7cb2e8ef2fd8bd90400924f1761ed519354e0a54bdab52e9cdbf8')
+    load_dotenv()
+    key = os.getenv('SEC_KEY')
+    self.queryApi = QueryApi(api_key=key)
 
   def get_filings_by_stock_name(self, stock='TSLA'):
 
