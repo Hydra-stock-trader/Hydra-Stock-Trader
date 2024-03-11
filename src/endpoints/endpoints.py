@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from typing import Any, Dict
 from src.models.models import  Item
-from src.logic.dummy import get_item
+
 from src.logic.stock_data import get_stock_data
 
 router = APIRouter()
@@ -18,3 +18,5 @@ async def stock(ticker_symbol: str):
         return {"ticker_symbol": ticker_symbol, "data": data}
     except Exception as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+
