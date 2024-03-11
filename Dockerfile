@@ -9,6 +9,7 @@ WORKDIR /app
 
 COPY requirements.txt ./
 COPY main.py ./
+COPY .env .
 COPY src ./src
 
 RUN set -ex \
