@@ -19,11 +19,10 @@ def prepare_data(stock_data, feature_days=5):
 
 def train_baseline_model(X, y):
     """
-    Trains the baseline Linear Regression model and returns it along with its RMSE on the test set.
+    Trains the baseline Linear Regression model on the given data and returns the trained model.
     """
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     model = LinearRegression()
     model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
-    rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-    return model, rmse
+
+    return model
