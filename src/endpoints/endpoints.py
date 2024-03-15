@@ -8,11 +8,6 @@ from src.logic.data_analysis import evaluate_model
 
 router = APIRouter()
 
-@router.get("/items/{item_id}", response_model=Item)
-async def read_item(item_id: int):
-    item = get_item(item_id)
-    return item
-
 @router.get("/stock/{ticker_symbol}", response_model=Dict[str, Any])
 async def stock(ticker_symbol: str):
     try:
@@ -25,23 +20,24 @@ async def stock(ticker_symbol: str):
 async def predict_stock_price(ticker_symbol: str):
     data = get_stock_data(ticker_symbol)
     X, y = prepare_data(data)
-    model, rmse = train_baseline_model(X, y)
+    model = train_baseline_model(X, y)
     last_day_features = X[-1].reshape(1, -1)
     prediction = model.predict(last_day_features)[0]
-    return {"ticker_symbol": ticker_symbol, "predicted_next_close": prediction, "rmse": rmse}
+    return {"ticker_symbol": ticker_symbol, "predicted_next_close": prediction}
 
 
 @router.get("/stock/{ticker_symbol}/evaluate")
 async def evaluate_stock_model(ticker_symbol: str):
     try:
         data = get_stock_data(ticker_symbol)
-        mse, mae, accuracy, r_squared = evaluate_model(data)
+        mse, mae, accuracy, r_squared, rmse = evaluate_model(data)
         return {
             "ticker_symbol": ticker_symbol,
             "mse": mse,
             "mae": mae,
             "accuracy": accuracy, 
-            "r_squared": r_squared
+            "r_squared": r_squared,
+            "rmse" : rmse
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to evaluate model for {ticker_symbol}: {str(e)}")
