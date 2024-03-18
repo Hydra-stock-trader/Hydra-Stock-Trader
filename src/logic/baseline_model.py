@@ -7,8 +7,9 @@ from sklearn.model_selection import train_test_split
 
 def prepare_data(stock_data, feature_days=200):
     """
-    Prepares data for the baseline model, using the last 'feature_days' closing prices as features
-    to predict the next closing price, including the Quarterly P/E Ratio as an additional feature.
+    Prepares data for the baseline model, using the last 'feature_days' closing prices as features, 
+    and other features like Open, High, Low, Volume, including the Quarterly P/E Ratio 
+    as an additional feature to predict the next closing price.
     """
     # Convert historical stock data to DataFrame and reset the index to make 'Date' a column
     df_history = pd.DataFrame(stock_data['history']).reset_index()
@@ -26,18 +27,19 @@ def prepare_data(stock_data, feature_days=200):
     df = pd.merge_asof(df_history, df_pe_ratio, left_on='Date', right_on='asOfDate',
                        direction='forward')  # 'forward' fills each P/E Ratio forward seeing as it's quarterly data
 
-    # Prepare the features matrix X including the P/E Ratio
-    X_prices = np.array([df['Close'].shift(i) for i in range(1, feature_days + 1)]).T
-    X_pe_ratio = df['PeRatio'].values.reshape(-1, 1)
-    X = np.hstack((X_prices, X_pe_ratio))  # Combine price features with P/E Ratio
+    # Merge P/E Ratio data with stock history, forward-filling P/E Ratios
+    df_merged = pd.merge_asof(df_history, df_pe_ratio, left_on='Date', right_on='asOfDate', direction='forward')
+    df_merged['PeRatio'] = pd.to_numeric(df_merged['PeRatio'], errors='coerce').ffill()
+
+    # Selecting features and the target variable
+    X = df_merged[['Open', 'High', 'Low', 'Volume', 'PeRatio']].values  # Features including P/E Ratio
+    y = df_merged['Close'].values  # Target variable
 
     # Convert all of X to float to avoid issues with np.isnan
     X = np.asarray(X, dtype=np.float64)
-    
-    y = df['Close'].values
 
-    # Remove rows with NaNs (likely the first few rows due to shifting and merging)
-    valid_rows = ~np.isnan(X).any(axis=1)
+    # Handling rows with NaN values - these might originate from the forward fill if the first rows do not have P/E Ratio data
+    valid_rows = ~np.isnan(X).any(axis=1) & ~np.isnan(y)
     X, y = X[valid_rows], y[valid_rows]
 
     return X, y
